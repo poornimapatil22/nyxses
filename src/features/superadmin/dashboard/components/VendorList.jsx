@@ -109,6 +109,8 @@ import RemoveRedEyeIcon from '@mui/icons-material/RemoveRedEye';
 import SupervisedUserCircleIcon from '@mui/icons-material/SupervisedUserCircle';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import Analytics from './Analytics';
+import VendorCharts from './VendorCharts';
+import VendorBentoOverview from './VendorBentoOverview';
 
 const fmt = (dt) => {
   try {
@@ -168,7 +170,9 @@ const VendorList = () => {
 
   return (
     <Box sx={{ p: 2, display: 'flex', flexDirection: 'column', gap: 2 }}>
-      <Analytics />
+      {/* <Analytics /> */}
+      <VendorBentoOverview/>
+      <VendorCharts/>
       {loading && (
         <Box sx={{ py: 6, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <CircularProgress size={22} />

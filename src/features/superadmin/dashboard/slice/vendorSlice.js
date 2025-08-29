@@ -38,9 +38,9 @@ export const filterCustomers = createAsyncThunk(
 
 export const totalvendors = createAsyncThunk(
     "vendor/totalvendor",
-    async ( {rejectWithValue})=>{
+    async (payload, {rejectWithValue})=>{
       try{
-        const {data} = await filterCustomer({});
+        const {data} = await filterCustomer(payload);
         return data.data;
       }catch(e){
         const msg = "sorry";
