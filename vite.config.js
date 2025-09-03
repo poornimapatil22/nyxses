@@ -8,10 +8,10 @@ export default defineConfig({
   server: {
     proxy: {
       '/api': {
-        target: 'https://fdms.nyxses.com',
+        target: 'https://fdms.nyxses.in',
         changeOrigin: true,
         secure: false,
-        rewrite: (path) => path.replace(/^\/api/, ''), // 👈 strip /api
+        rewrite: (path) => path.replace(/^\/api/, ''), 
       },
     },
   },
