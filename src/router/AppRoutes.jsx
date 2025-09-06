@@ -7,10 +7,8 @@ import { useSelector } from 'react-redux';
 
 // PAGES
 import Login from '../features/auth/pages/Login';
-// import SuperAdminLayout from '../features/dashboardslayout/superadminlayout/SuperAdminLayout';
-// import AdminLayout from '../features/dashboardslayout/adminlayout/AdminLayout';
-// import App from './../app/App';
-// import VendorList from '../features/superadmin/dashboard/components/VendorList';
+import DashboardLayout from '../features/DashboardLayout/Components/DashboardLayout';
+
 
 // TODO: replace these placeholders with your real pages
 const Dashboard = () => <h1>not super admin Dashboard</h1>;
@@ -32,15 +30,15 @@ export default function AppRoutes() {
       <Route path={ROUTES.UNAUTHORIZED} element={<Unauthorized />} />
 
       {/* Auth-only (no role restriction) */}
-      {/* <Route element={<PrivateRoutes />}>
+      <Route element={<PrivateRoutes />}>
         { superAdmin ? (
-          <Route path={ROUTES.DASHBOARD} element={<SuperAdminLayout/>} >
-               <Route index element={<VendorList />} />
+          <Route path={ROUTES.DASHBOARD} element={<DashboardLayout/>} >
+               {/* <Route index element={<VendorList />} /> */}
           </Route>
         ): (
-          <Route path={ROUTES.DASHBOARD} element={<AdminLayout/>} />
+          <Route path={ROUTES.DASHBOARD} element={<DashboardLayout/>} />
         )}
-      </Route> */}
+      </Route>
       {/* 404 */}
       <Route path="*" element={<NotFound />} />
     </Routes>

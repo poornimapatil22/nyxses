@@ -56,10 +56,14 @@ const Loginform = ({onForgotPassword}) => {
 
   return (
     <Paper elevation={0} sx={{ padding:3, width: "100%",height:"100%",maxHeight:500, display: "flex", flexDirection: "column", justifyContent:"start" }}>
-      <Typography variant="h4" fontWeight={700}>
-        NeoDMS
-      </Typography>
-      <Typography variant="h2" fontSize={34} sx={{ mt: 1, opacity: 0.87 }}>
+      <Box>
+                  <img
+                    src="\src\assets\images\neo dms logo dark.svg"
+                    alt="NeoDMS Logo"
+                    style={{ maxWidth: "70%", maxHeight: "60%" }}
+                  />
+                </Box>
+      <Typography variant="h2" fontSize={34} sx={{ mt: 0, opacity: 0.87 }}>
         Welcome
       </Typography>
       <Typography
