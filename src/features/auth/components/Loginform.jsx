@@ -58,7 +58,7 @@ const Loginform = ({onForgotPassword}) => {
     <Paper elevation={0} sx={{ padding:3, width: "100%",height:"100%",maxHeight:500, display: "flex", flexDirection: "column", justifyContent:"start" }}>
       <Box>
                   <img
-                    src="\src\assets\images\neo dms logo dark.svg"
+                    src="/neo dms logo dark.svg"
                     alt="NeoDMS Logo"
                     style={{ maxWidth: "70%", maxHeight: "60%" }}
                   />

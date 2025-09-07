@@ -67,7 +67,7 @@ export default function Sidebar({ menuItems }) {
           {/* Logo */}
           <Box>
             <img
-              src="\src\assets\images\neo dms logo.svg"
+              src="/neo dms logo.svg"
               alt="NeoDMS Logo"
               style={{ display: collapsed ? "none" : "block" }}
             />
