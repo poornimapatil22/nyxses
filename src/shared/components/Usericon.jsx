@@ -13,10 +13,11 @@ import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
 
 // logout action
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { logout } from '../../features/auth/slice/authSlice';
 
 export default function Usericon() {
+    const user = useSelector((state) => state.auth.user);
     const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -26,6 +27,9 @@ export default function Usericon() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const userName = user?.data?.name || user?.name || 'Guest';
+  const userEmail = user?.data?.email || user?.email || 'Guest';
   return (
     <React.Fragment>
       
@@ -79,10 +83,10 @@ export default function Usericon() {
         anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
         <MenuItem onClick={handleClose}>
-           Hi atharv
+           Hi, {userName}
         </MenuItem>
         <MenuItem onClick={handleClose}>
-           atharvkadole16@gmail.com
+           {userEmail}
         </MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>

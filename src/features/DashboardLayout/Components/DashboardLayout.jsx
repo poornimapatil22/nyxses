@@ -14,9 +14,11 @@ import { theme } from './../../../shared/themes/theme';
 
 
 // super admin and admin imports
-
-
 import { useSelector } from "react-redux";
+
+// stats import
+import Stats from "../../Dashboard/components/stats";
+import { Outlet } from "react-router-dom";
 
 // pass menu via props (icons + optional children)
 const SMENU = [
@@ -46,18 +48,13 @@ export default function App() {
 
   const MENU = superAdmin ? SMENU : AMENU;
   return (
-    <Box sx={{ display: "flex", height: "100vh", width: "100%",backgroundColor:"#f6f6f6ff",gap:1,padding:"8px",overflow:"hidden" }}>
+    <Box sx={{ display: "flex", height: "100vh", width: "100%",backgroundColor:"#ffffffff",gap:1,padding:"8px",overflow:"hidden" }}>
       <Sidebar menuItems={MENU} />
         
-        <Box sx={{ flexGrow: 1, p: 0, border: "1px solid #ccc", overflowY: "auto", borderRadius: theme.radius.sm ,scrollbarWidth: "none",position:"relative" }}>
+        <Box sx={{ display: "flex",backgroundColor:"#ffffffff",flexDirection: "column",gap:1, flexGrow: 1, p: 0, overflowY: "auto", borderRadius: theme.radius.sm ,scrollbarWidth: "none",position:"relative" }}>
             <Globalheader />
             <CssBaseline />
-            <h1>Welcome to NeoDMS</h1>
-            <p>This is the main content area.</p>
-            <Box sx={{ height: "200vh" }}>
-              <p>Scroll down to see the sidebar stay fixed.</p>
-            </Box>
-            hjkfgsadf
+            <Outlet />
         </Box>
     </Box>
   );

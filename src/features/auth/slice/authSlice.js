@@ -144,6 +144,9 @@ const slice = createSlice({
       s.loading = true;
     }).addCase(performLogout.fulfilled, (s) => {
       s.loading = false;
+      s.token = null;
+      s.user = null;
+      s.error = null;
     });
   },
 });

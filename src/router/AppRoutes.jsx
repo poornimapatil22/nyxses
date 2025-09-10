@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 // PAGES
 import Login from '../features/auth/pages/Login';
 import DashboardLayout from '../features/DashboardLayout/Components/DashboardLayout';
+import Stats from '../features/Dashboard/components/Stats';
 
 
 // TODO: replace these placeholders with your real pages
@@ -33,7 +34,8 @@ export default function AppRoutes() {
       <Route element={<PrivateRoutes />}>
         { superAdmin ? (
           <Route path={ROUTES.DASHBOARD} element={<DashboardLayout/>} >
-               {/* <Route index element={<VendorList />} /> */}
+               <Route index element={<Stats/>} />
+               
           </Route>
         ): (
           <Route path={ROUTES.DASHBOARD} element={<DashboardLayout/>} />

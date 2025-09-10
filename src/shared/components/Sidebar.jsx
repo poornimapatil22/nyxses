@@ -18,6 +18,8 @@ import { NavLink } from "react-router-dom";
 const FULL_W = 240;
 const MINI_W = 60;
 
+// React Router v6 helper: returns "active" class when current route matches
+const navActive = ({ isActive }) => (isActive ? "active" : undefined);
 
 export default function Sidebar({ menuItems }) {
   const theme = useTheme();
@@ -42,9 +44,9 @@ export default function Sidebar({ menuItems }) {
           flexShrink: 0,
           "& .MuiDrawer-paper": {
             width: collapsed ? MINI_W : FULL_W,
-            m: "8px", // 8px gap all around
-            height: "calc(100vh - 16px)", // account for margins
-            borderRadius: theme.radius.sm,
+            m: "8px",
+            height: "calc(100vh - 16px)",
+            borderRadius: theme.radius?.sm,
             overflow: "hidden",
             boxSizing: "border-box",
             backgroundColor:
@@ -81,108 +83,107 @@ export default function Sidebar({ menuItems }) {
         </Box>
 
         {/* Menu */}
-        <List sx={{ pt: 0.5,mt:2,px: collapsed ? 0 : 1 }}>
-          {menuItems.map((item) => (
-            <React.Fragment key={item.label}>
-              <Tooltip
-                title={collapsed ? item.label : ""}
-                placement="right"
-                enterDelay={300}
-              >
-                <ListItemButton
-                  component={item.to ? NavLink : "button"}
-                  to={item.to || undefined}
-                  onClick={
-                    item.children ? () => toggleMenu(item.label) : undefined
-                  }
-                  end
-                  sx={(t) => ({
-                    color: t.palette.grey.lighten_1,
-                    width: "100%",
-                    borderRadius: t.radius.sm,
-                    px: collapsed ? 1 : 1.25,
-                    "& .MuiListItemText-primary": {
-                      fontSize: t.typography.body1.fontSize, // ← use theme token
-                      fontWeight: 300, // ← medium weight
-                      fontFamily: t.typography.fontFamily, // optional, ensures consistency
-                    },
+        <List sx={{ pt: 0.5, mt: 2, px: collapsed ? 0 : 1 }}>
+          {menuItems.map((item) => {
+            const hasChildren = Array.isArray(item.children) && item.children.length > 0;
+            // Make parent a link ONLY if it has a "to" AND no children (so clicks don’t both navigate and expand)
+            const isLink = Boolean(item.to) && !hasChildren;
 
-                    "& .MuiListItemIcon-root": {
-                      color: t.palette.grey.lighten_1,
-                      minWidth: 40,
-                    },
-                    "&:hover": {
-                      backgroundColor: alpha(t.palette.background.paper, 0.09),
-                    },
-                    "&.active": {
-                      backgroundColor: "rgba(255, 255, 255, 0.03)", // faint base layer
-                      backgroundImage:
-                        "radial-gradient(circle at center, rgba(184,110,159,0.12) 0%, rgba(102,37,37,0.12) 100%)",
-                      backgroundBlendMode: "lighten", // makes the gradient blend softly
-                      color: t.palette.background.paper,
-                      "& .MuiListItemIcon-root": {
-                        color: t.palette.background.paper,
+            return (
+              <React.Fragment key={item.label}>
+                <Tooltip
+                  title={collapsed ? item.label : ""}
+                  placement="right"
+                  enterDelay={300}
+                >
+                  <ListItemButton
+                    component={isLink ? NavLink : "button"}
+                    to={isLink ? item.to : undefined}
+                    onClick={!isLink && hasChildren ? () => toggleMenu(item.label) : undefined}
+                    // Apply NavLink-only props conditionally
+                    {...(isLink ? { end: true, className: navActive } : {})}
+                    sx={(t) => ({
+                      color: t.palette.grey?.lighten_1 || t.palette.text.secondary,
+                      width: "100%",
+                      borderRadius: t.radius?.sm,
+                      px: collapsed ? 1 : 1.25,
+                      "& .MuiListItemText-primary": {
+                        fontSize: t.typography.body1.fontSize,
+                        fontWeight: 300,
+                        fontFamily: t.typography.fontFamily,
                       },
-                    },
-                  })}
-                >
-                  <ListItemIcon>{item.icon}</ListItemIcon>
-                  {!collapsed && <ListItemText primary={item.label} />}
-                  {!collapsed &&
-                    item.children &&
-                    (openMenus[item.label] ? <ExpandLess /> : <ExpandMore />)}
-                </ListItemButton>
-              </Tooltip>
+                      "& .MuiListItemIcon-root": {
+                        color: t.palette.grey?.lighten_1 || t.palette.text.secondary,
+                        minWidth: 40,
+                      },
+                      "&:hover": {
+                        backgroundColor: alpha(t.palette.background.paper, 0.09),
+                      },
+                      "&.active": {
+                        backgroundColor: "rgba(255, 255, 255, 0.03)",
+                        backgroundImage:
+                          "radial-gradient(circle at center, rgba(184,110,159,0.12) 0%, rgba(102,37,37,0.12) 100%)",
+                        backgroundBlendMode: "lighten",
+                        color: t.palette.background.paper,
+                        "& .MuiListItemIcon-root": {
+                          color: t.palette.background.paper,
+                        },
+                      },
+                    })}
+                  >
+                    <ListItemIcon>{item.icon}</ListItemIcon>
+                    {!collapsed && <ListItemText primary={item.label} />}
+                    {!collapsed &&
+                      hasChildren &&
+                      (openMenus[item.label] ? <ExpandLess /> : <ExpandMore />)}
+                  </ListItemButton>
+                </Tooltip>
 
-              {/* Submenu */}
-              {item.children && (
-                <Collapse
-                  in={openMenus[item.label]}
-                  timeout="auto"
-                  unmountOnExit
-                >
-                  <List component="div" disablePadding>
-                    {item.children.map((child) => (
-                      <Tooltip
-                        key={child.label}
-                        title={collapsed ? child.label : ""}
-                        placement="right"
-                        enterDelay={300}
-                      >
-                        <ListItemButton
-                          component={NavLink}
-                          to={child.to}
-                          end
-                          sx={(t) => ({
-                            pl: collapsed ? 1.5 : 4,
-                            color: t.palette.grey.lighten_1,
-                            borderRadius: t.radius.sm,
-                            "& .MuiListItemIcon-root": {
-                              color: t.palette.grey.lighten_1,
-                              minWidth: 40,
-                            },
-                            "&:hover": {
-                              backgroundColor: alpha(
-                                t.palette.background.paper,
-                                0.09
-                              ),
-                            },
-                            "&.active": {
-                              backgroundImage:
-                                "radial-gradient(circle, #B86E9F1A 0%, #6625251A 100%)",
-                            },
-                          })}
+                {/* Submenu */}
+                {hasChildren && (
+                  <Collapse in={openMenus[item.label]} timeout="auto" unmountOnExit>
+                    <List component="div" disablePadding>
+                      {item.children.map((child) => (
+                        <Tooltip
+                          key={child.label}
+                          title={collapsed ? child.label : ""}
+                          placement="right"
+                          enterDelay={300}
                         >
-                          <ListItemIcon>{child.icon}</ListItemIcon>
-                          {!collapsed && <ListItemText primary={child.label}  />}
-                        </ListItemButton>
-                      </Tooltip>
-                    ))}
-                  </List>
-                </Collapse>
-              )}
-            </React.Fragment>
-          ))}
+                          <ListItemButton
+                            component={NavLink}
+                            to={child.to}
+                            end
+                            className={navActive}
+                            sx={(t) => ({
+                              pl: collapsed ? 1.5 : 4,
+                              color: t.palette.grey?.lighten_1 || t.palette.text.secondary,
+                              borderRadius: t.radius?.sm,
+                              "& .MuiListItemIcon-root": {
+                                color: t.palette.grey?.lighten_1 || t.palette.text.secondary,
+                                minWidth: 40,
+                              },
+                              "&:hover": {
+                                backgroundColor: alpha(t.palette.background.paper, 0.09),
+                              },
+                              "&.active": {
+                                backgroundImage:
+                                  "radial-gradient(circle, #B86E9F1A 0%, #6625251A 100%)",
+                                color: t.palette.text.primary,
+                              },
+                            })}
+                          >
+                            <ListItemIcon>{child.icon}</ListItemIcon>
+                            {!collapsed && <ListItemText primary={child.label} />}
+                          </ListItemButton>
+                        </Tooltip>
+                      ))}
+                    </List>
+                  </Collapse>
+                )}
+              </React.Fragment>
+            );
+          })}
         </List>
       </Drawer>
     </Box>

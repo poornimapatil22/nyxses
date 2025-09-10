@@ -22,7 +22,7 @@ const GlobalHeader = ({ title = "Dashboard", actions, avatarSrc }) => {
           justifyContent: "space-between",
           px: 2.5,
           borderRadius: theme.radius.sm,
-          bgcolor: theme.palette.grey.lighten_3,
+          bgcolor: theme.palette.grey.lighten_2,
           boxShadow: "0 8px 16px rgba(0,0,0,0.06)",
           zIndex: (t) => t.zIndex.appBar, // stay above content
         }}
