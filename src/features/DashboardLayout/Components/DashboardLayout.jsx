@@ -17,7 +17,6 @@ import { theme } from './../../../shared/themes/theme';
 import { useSelector } from "react-redux";
 
 // stats import
-import Stats from "../../Dashboard/components/stats";
 import { Outlet } from "react-router-dom";
 
 // pass menu via props (icons + optional children)
