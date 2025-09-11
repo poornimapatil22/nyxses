@@ -6,7 +6,9 @@ export const getallcustomers = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const { data } = await getAllCustomer();
+      console.log("all cust data",data);
       return data;
+
     } catch (e) {
       return rejectWithValue(e?.response?.data ?? { message: e.message || "Request failed" });
     }

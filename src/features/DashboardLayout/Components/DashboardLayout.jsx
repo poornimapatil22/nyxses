@@ -22,6 +22,7 @@ import { Outlet } from "react-router-dom";
 // pass menu via props (icons + optional children)
 const SMENU = [
   { label: "Dashboard", icon: <DashboardIcon />, to: "/dashboard" },
+  { label: "Customers", icon: <AppsIcon />, to: "customers" },
   { label: "Shared Apps", icon: <AppsIcon />
   },
   { label: "Settings", icon: <SettingsIcon />, to: "/settings" },

@@ -11,12 +11,14 @@ import Tooltip from '@mui/material/Tooltip';
 import PersonAdd from '@mui/icons-material/PersonAdd';
 import Settings from '@mui/icons-material/Settings';
 import Logout from '@mui/icons-material/Logout';
+import { useNavigate } from 'react-router-dom';
 
 // logout action
 import { useDispatch, useSelector } from 'react-redux';
-import { logout } from '../../features/auth/slice/authSlice';
+import { performLogout } from '../../features/auth/slice/authSlice';
 
 export default function Usericon() {
+  const navigate = useNavigate();
     const user = useSelector((state) => state.auth.user);
     const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
@@ -95,7 +97,7 @@ export default function Usericon() {
           </ListItemIcon>
           Settings
         </MenuItem>
-        <MenuItem onClick={() => dispatch(logout())}>
+        <MenuItem onClick={() => dispatch(performLogout())}>
           <ListItemIcon >
             <Logout fontSize="small" />
           </ListItemIcon>

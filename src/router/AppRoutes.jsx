@@ -1,47 +1,101 @@
+// // src/router/AppRoutes.jsx
+// import { Routes, Route } from 'react-router-dom';
+// import PrivateRoutes from './PrivateRoutes';
+// import { ROUTES } from '../config/routes';
+// import { useSelector } from 'react-redux';
+
+// import Login from '../features/auth/pages/Login';
+// import DashboardLayout from '../features/DashboardLayout/Components/DashboardLayout';
+// import Stats from '../features/Dashboard/components/Stats';
+// import CustomersTable from '../features/Dashboard/components/CustomersTable';
+
+// const Dashboard = () => <h1>not super admin Dashboard</h1>;
+// const Unauthorized = () => <h1>Unauthorized</h1>;
+// const NotFound = () => <h1>404 - Not Found</h1>;
+
+// export default function AppRoutes() {
+//   const superAdmin = useSelector((s) => s.auth.superAdmin);
+
+//   return (
+//     <Routes>
+//       {/* Public */}
+//       <Route path={ROUTES.LOGIN} element={<Login />} />
+//       <Route path={ROUTES.HOME} element={<Login />} />
+//       <Route path={ROUTES.UNAUTHORIZED} element={<Unauthorized />} />
+
+//       {/* Auth-only */}
+//       <Route element={<PrivateRoutes />}>
+//         {superAdmin ? (
+//           <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
+//             <Route index element={<Stats />} />
+//             <Route path={ROUTES.CUSTOMER} element={<CustomersTable />} /> 
+//             {/* resolves to /dashboard/customers */}
+//           </Route>
+//         ) : (
+//           <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
+//             <Route index element={<Dashboard />} />
+//           </Route>
+//         )}
+//       </Route>
+
+//       {/* 404 last */}
+//       <Route path="*" element={<NotFound />} />
+//     </Routes>
+//   );
+// }
+
+
 // src/router/AppRoutes.jsx
 import { Routes, Route } from 'react-router-dom';
-import PrivateRoutes from './PrivateRoutes';
-import { ROLES } from '../config/roles';
-import { ROUTES } from '../config/routes';
 import { useSelector } from 'react-redux';
+import { ROUTES } from '../config/routes';
+import PrivateRoutes from './PrivateRoutes';
+import { RequireSuperAdmin, RequireAdmin } from './roleGates';
 
-// PAGES
 import Login from '../features/auth/pages/Login';
 import DashboardLayout from '../features/DashboardLayout/Components/DashboardLayout';
 import Stats from '../features/Dashboard/components/Stats';
+import CustomersTable from '../features/Dashboard/components/CustomersTable';
 
-
-// TODO: replace these placeholders with your real pages
-const Dashboard = () => <h1>not super admin Dashboard</h1>;
-const DevicesList = () => <h1>Devices</h1>;
-const DeviceDetail = () => <h1>Device Detail</h1>;
+const AppsPage = () => <h1>Apps (Super Admin)</h1>;
+const DevicesPage = () => <h1>Devices (Admin)</h1>;
+const AdminIndex = () => <h1>Admin Dashboard</h1>;
 const Unauthorized = () => <h1>Unauthorized</h1>;
 const NotFound = () => <h1>404 - Not Found</h1>;
 
 export default function AppRoutes() {
-  const superAdmin = useSelector((state) => state.auth.superAdmin);
-  const user = useSelector((state) => state.auth.user);
-  console.log('user:', user);
-  console.log('superAdmin:', superAdmin);
+  const superAdmin = useSelector((s) => !!s.auth?.superAdmin);
+
   return (
     <Routes>
       {/* Public */}
+      <Route path={ROUTES.HOME} element={<Login />} />
       <Route path={ROUTES.LOGIN} element={<Login />} />
-      <Route path={ROUTES.HOME} element={<Login/>} />
       <Route path={ROUTES.UNAUTHORIZED} element={<Unauthorized />} />
 
-      {/* Auth-only (no role restriction) */}
+      {/* Auth-only */}
       <Route element={<PrivateRoutes />}>
-        { superAdmin ? (
-          <Route path={ROUTES.DASHBOARD} element={<DashboardLayout/>} >
-               <Route index element={<Stats/>} />
-               
+        <Route path={ROUTES.DASHBOARD} element={<DashboardLayout />}>
+          {/* Index differs by role but tree is stable */}
+          <Route index element={superAdmin ? <Stats /> : <AdminIndex />} />
+
+          {/* Super Admin-only */}
+          <Route element={<RequireSuperAdmin />}>
+            <Route path={ROUTES.CUSTOMERS} element={<CustomersTable />} /> {/* /dashboard/customers */}
+            <Route path={ROUTES.APPS} element={<AppsPage />} />            {/* /dashboard/apps */}
           </Route>
-        ): (
-          <Route path={ROUTES.DASHBOARD} element={<DashboardLayout/>} />
-        )}
+
+          {/* Admin-only */}
+          <Route element={<RequireAdmin />}>
+            <Route path={ROUTES.DEVICES} element={<DevicesPage />} />      {/* /dashboard/devices */}
+          </Route>
+
+          {/* Nested 404 for /dashboard/* */}
+          <Route path="*" element={<NotFound />} />
+        </Route>
       </Route>
-      {/* 404 */}
+
+      {/* App-level 404 */}
       <Route path="*" element={<NotFound />} />
     </Routes>
   );

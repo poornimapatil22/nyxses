@@ -415,7 +415,7 @@ export default function Stats() {
   return (
     <>
       <Statscard items={cards} />
-
+      
       <TrendChart
         data={TREND}
         title="Customer Onboarding vs Expiry (last 12 months)"

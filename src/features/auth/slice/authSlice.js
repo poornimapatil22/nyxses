@@ -1,30 +1,29 @@
+// authSlice.js
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { loginRequest, getCurrentUser } from "../api/auth.api";
 import { setAuthToken, clearAuthToken } from "../../../services/axios";
-import { useNavigate } from "react-router-dom";
+import { ROUTES } from '../../../config/routes';
 
-/* 1) App-load check */
+/* 1) App-load check (no navigation here) */
 export const checkAuthOnLoad = createAsyncThunk(
   "auth/checkAuthOnLoad",
   async (_, { rejectWithValue }) => {
     const token = localStorage.getItem("token");
     if (!token) {
-      const Navigate = useNavigate();
-      Navigate("/login", { replace: true });
-    };
-
-    setAuthToken(token); // header ready
+      return rejectWithValue("NO_TOKEN");
+    }
+    setAuthToken(token);
     try {
       const { data } = await getCurrentUser();
       return { token, user: data };
-    } catch (e) {
+    } catch {
       clearAuthToken();
       return rejectWithValue("TOKEN_INVALID");
     }
   }
 );
 
-/* 2) Login (expects both token + user in response) */
+/* 2) Login */
 export const login = createAsyncThunk(
   "auth/login",
   async (form, { rejectWithValue }) => {
@@ -35,51 +34,51 @@ export const login = createAsyncThunk(
       const { data } = await loginRequest(form);
       const token = data.id_token ?? null;
       if (!token) {
-        const msg = data?.message || "Login failed missing token";
-        return rejectWithValue(msg);
+        return rejectWithValue(data?.message || "Login failed missing token");
       }
-
       setAuthToken(token);
+      localStorage.setItem("token", token);
 
       try {
         const user = (await getCurrentUser()).data;
         if (!user) {
           clearAuthToken();
+          localStorage.removeItem("token");
           return rejectWithValue("Login failed missing user");
         }
-        console.log("User fetched successfully:", user);
         return { token, user };
       } catch (err) {
         clearAuthToken();
-        const msg =
-          err?.response?.data?.message ||
-          err.message ||
-          "Login failed fetching user";
-        return rejectWithValue(msg);
+        localStorage.removeItem("token");
+        return rejectWithValue(
+          err?.response?.data?.message || err.message || "Login failed fetching user"
+        );
       }
     } catch (err) {
-      const msg = err?.response?.data?.message || err.message || "Login failed";
-      return rejectWithValue(msg);
+      return rejectWithValue(err?.response?.data?.message || err.message || "Login failed");
     }
   }
 );
 
-/* 3) Logout thunk to handle side-effects */
+/* 3) Logout thunk: allow navigation by passing it in */
 export const performLogout = createAsyncThunk(
   "auth/performLogout",
-  async (_, { dispatch }) => {
+  async (navigate , { dispatch }) => {
     clearAuthToken();
     localStorage.removeItem("token");
-    dispatch(logout()); // plain state reset below
+    dispatch(logout());            // pure state reset
+    if (typeof navigate === "function") {
+      navigate("/login", { replace: true });  // do side-effect here
+    }
   }
 );
 
 const initialState = {
-  user: null, // readUser(),
+  user: null,
   token: localStorage.getItem("token") || null,
   loading: false,
   error: null,
-  role: null, // optional: if you want to store user role
+  superAdmin: false,
 };
 
 const slice = createSlice({
@@ -91,63 +90,57 @@ const slice = createSlice({
       state.token = null;
       state.loading = false;
       state.error = null;
-      state.superAdmin = false; // reset role if needed
-      clearAuthToken();
+      state.superAdmin = false;
+      // no navigation here
     },
   },
   extraReducers: (b) => {
-    // check on load
-    b.addCase(checkAuthOnLoad.pending, (s) => {
-      s.loading = true;
-      s.error = null;
-    })
+    b
+      // check on load
+      .addCase(checkAuthOnLoad.pending, (s) => {
+        s.loading = true; s.error = null;
+      })
       .addCase(checkAuthOnLoad.fulfilled, (s, { payload }) => {
         s.loading = false;
-        if (payload) {
-          // <— guard
-          s.user = payload.user;
-          s.token = payload.token;
-          s.superAdmin = payload.user.data.superAdmin || false;
-        } else {
-          s.user = null;
-          s.token = null;
-        }
+        s.user = payload.user;
+        s.token = payload.token;
+        s.superAdmin = !!(payload.user?.data?.superAdmin);
       })
       .addCase(checkAuthOnLoad.rejected, (s, { payload }) => {
         s.loading = false;
         s.user = null;
         s.token = null;
         s.error = payload || null;
-      });
+      })
 
-    // login
-    b.addCase(login.pending, (s) => {
-      s.loading = true;
-      s.error = null;
-    })
+      // login
+      .addCase(login.pending, (s) => {
+        s.loading = true; s.error = null;
+      })
       .addCase(login.fulfilled, (s, { payload }) => {
         s.loading = false;
         s.user = payload.user;
         s.token = payload.token;
-        s.superAdmin = payload.user.data.superAdmin || false;
+        s.superAdmin = !!(payload.user?.data?.superAdmin);
       })
       .addCase(login.rejected, (s, { payload, error }) => {
         s.loading = false;
         s.user = null;
         s.token = null;
         s.error = payload || error.message;
-      });
-    // performLogout (optional to reflect pending state if you want)
-    // dispatch(performLogout()); // handles header + storage + state use of logout reducer
+      })
 
-    b.addCase(performLogout.pending, (s) => {
-      s.loading = true;
-    }).addCase(performLogout.fulfilled, (s) => {
-      s.loading = false;
-      s.token = null;
-      s.user = null;
-      s.error = null;
-    });
+      // logout
+      .addCase(performLogout.pending, (s) => {
+        s.loading = true;
+      })
+      .addCase(performLogout.fulfilled, (s) => {
+        s.loading = false;
+        s.user = null;
+        s.token = null;
+        s.error = null;
+        s.superAdmin = false;
+      });
   },
 });
 
