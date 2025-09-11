@@ -49,45 +49,50 @@ const fmtTime = (ms) =>
     ? new Date(ms).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" })
     : "—";
 
-const STATUS_STYLE = {
-  "customer.active":       { label: "Active",   color: "success" },
-  "customer.new":          { label: "New",      color: "secondary" },
-  "customer.expired":      { label: "Expired",  color: "default" },
-  "customer.pause":        { label: "Paused",   color: "warning" },
-  "customer.denial":       { label: "Denied",   color: "default" },
-  "customer.abandon":      { label: "Abandon",  color: "default" },
-  "customer.need.followup":{ label: "Follow-up",color: "warning" },
-  "customer.followup.sent":{ label: "Follow-up",color: "info" },
-  "customer.no.signin":    { label: "No Sign-in", color: "default" },
-  "customer.internal.test":{ label: "Internal", color: "default" },
-  "customer.client":       { label: "Active",   color: "success" },
-  "customer.developer":    { label: "Active",   color: "success" },
-  "customer.onpremise.trial": { label: "New",   color: "secondary" },
+
+export const STATUS_STYLE = {
+  "customer.active":          { label: "Active",            color: "success" },
+  "customer.client":          { label: "Client",            color: "success" },
+  "customer.new":             { label: "New",               color: "secondary" },
+  "customer.onpremise.trial": { label: "On-premise trial",  color: "secondary" },
+  "customer.need.followup":   { label: "Need follow-up",    color: "warning" },
+  "customer.followup.sent":   { label: "Follow-up sent",    color: "info" },
+  "customer.pause":           { label: "Pause",             color: "warning" },
+  "customer.no.signin":       { label: "No sign-in",        color: "default" },
+  "customer.internal.test":   { label: "Internal test",     color: "default" },
+  "customer.developer":       { label: "Developer",         color: "success" },
+  "customer.difficult":       { label: "Difficult",         color: "warning" },
+  "customer.abandon":         { label: "Abandon",           color: "default" },
+  "customer.denial":          { label: "Denial",            color: "default" },
+  "customer.expired":         { label: "Expired",           color: "default" },
 };
+
 
 const ACCOUNT_TYPES = [
   { value: "",  label: "All Types" },
-  { value: "0", label: "Demo / Trial" },
+  { value: "0", label: "Demo" },
   { value: "1", label: "Professional" },
   { value: "2", label: "Enterprise" },
 ];
 
-const STATUSES = [
-  { value: "", label: "All Statuses" },
-  { value: "customer.active", label: "Active" },
+export const STATUSES = [
+  { value: "", label: "All statuses" },
   { value: "customer.new", label: "New" },
-  { value: "customer.expired", label: "Expired" },
-  { value: "customer.pause", label: "Paused" },
-  { value: "customer.denial", label: "Denied" },
-  { value: "customer.abandon", label: "Abandon" },
-  { value: "customer.need.followup", label: "Need Follow-up" },
-  { value: "customer.followup.sent", label: "Follow-up Sent" },
-  { value: "customer.no.signin", label: "No Sign-in" },
-  { value: "customer.internal.test", label: "Internal Test" },
-  { value: "customer.client", label: "Client" },
+  { value: "customer.active", label: "Active" },
+  { value: "customer.need.followup", label: "Need follow-up" },
+  { value: "customer.followup.sent", label: "Follow-up sent" },
+  { value: "customer.internal.test", label: "Internal test" },
   { value: "customer.developer", label: "Developer" },
-  { value: "customer.onpremise.trial", label: "On-prem Trial" },
+  { value: "customer.difficult", label: "Difficult" },
+  { value: "customer.no.signin", label: "No sign-in" },
+  { value: "customer.pause", label: "Pause" },
+  { value: "customer.abandon", label: "Abandon" },
+  { value: "customer.denial", label: "Denial" },
+  { value: "customer.onpremise.trial", label: "On-premise trial" },
+  { value: "customer.client", label: "Client" },
+  { value: "customer.expired", label: "Expired" },
 ];
+
 
 // Map UI sort key -> API sort field
 const SORT_FIELD_MAP = {
