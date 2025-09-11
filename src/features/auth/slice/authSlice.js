@@ -2,7 +2,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { loginRequest, getCurrentUser } from "../api/auth.api";
 import { setAuthToken, clearAuthToken } from "../../../services/axios";
-import { ROUTES } from '../../../config/routes';
+import { ROUTES } from "../../../config/routes";
 
 /* 1) App-load check (no navigation here) */
 export const checkAuthOnLoad = createAsyncThunk(
@@ -51,11 +51,15 @@ export const login = createAsyncThunk(
         clearAuthToken();
         localStorage.removeItem("token");
         return rejectWithValue(
-          err?.response?.data?.message || err.message || "Login failed fetching user"
+          err?.response?.data?.message ||
+            err.message ||
+            "Login failed fetching user"
         );
       }
     } catch (err) {
-      return rejectWithValue(err?.response?.data?.message || err.message || "Login failed");
+      return rejectWithValue(
+        err?.response?.data?.message || err.message || "Login failed"
+      );
     }
   }
 );
@@ -63,12 +67,12 @@ export const login = createAsyncThunk(
 /* 3) Logout thunk: allow navigation by passing it in */
 export const performLogout = createAsyncThunk(
   "auth/performLogout",
-  async (navigate , { dispatch }) => {
+  async (navigate, { dispatch }) => {
     clearAuthToken();
     localStorage.removeItem("token");
-    dispatch(logout());            // pure state reset
+    dispatch(logout()); // pure state reset
     if (typeof navigate === "function") {
-      navigate("/login", { replace: true });  // do side-effect here
+      navigate("/login", { replace: true }); // do side-effect here
     }
   }
 );
@@ -98,13 +102,14 @@ const slice = createSlice({
     b
       // check on load
       .addCase(checkAuthOnLoad.pending, (s) => {
-        s.loading = true; s.error = null;
+        s.loading = true;
+        s.error = null;
       })
       .addCase(checkAuthOnLoad.fulfilled, (s, { payload }) => {
         s.loading = false;
         s.user = payload.user;
         s.token = payload.token;
-        s.superAdmin = !!(payload.user?.data?.superAdmin);
+        s.superAdmin = !!payload.user?.data?.superAdmin;
       })
       .addCase(checkAuthOnLoad.rejected, (s, { payload }) => {
         s.loading = false;
@@ -115,13 +120,14 @@ const slice = createSlice({
 
       // login
       .addCase(login.pending, (s) => {
-        s.loading = true; s.error = null;
+        s.loading = true;
+        s.error = null;
       })
       .addCase(login.fulfilled, (s, { payload }) => {
         s.loading = false;
         s.user = payload.user;
         s.token = payload.token;
-        s.superAdmin = !!(payload.user?.data?.superAdmin);
+        s.superAdmin = !!payload.user?.data?.superAdmin;
       })
       .addCase(login.rejected, (s, { payload, error }) => {
         s.loading = false;

@@ -1,26 +1,24 @@
-import * as React from 'react';
-import Box from '@mui/material/Box';
-import Avatar from '@mui/material/Avatar';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import ListItemIcon from '@mui/material/ListItemIcon';
-import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
-import PersonAdd from '@mui/icons-material/PersonAdd';
-import Settings from '@mui/icons-material/Settings';
-import Logout from '@mui/icons-material/Logout';
-import { useNavigate } from 'react-router-dom';
+import * as React from "react";
+import Box from "@mui/material/Box";
+import Avatar from "@mui/material/Avatar";
+import Menu from "@mui/material/Menu";
+import MenuItem from "@mui/material/MenuItem";
+import ListItemIcon from "@mui/material/ListItemIcon";
+import Divider from "@mui/material/Divider";
+import IconButton from "@mui/material/IconButton";
+import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
+import PersonAdd from "@mui/icons-material/PersonAdd";
+import Settings from "@mui/icons-material/Settings";
+import Logout from "@mui/icons-material/Logout";
 
 // logout action
-import { useDispatch, useSelector } from 'react-redux';
-import { performLogout } from '../../features/auth/slice/authSlice';
+import { useDispatch, useSelector } from "react-redux";
+import { performLogout } from "../../features/auth/slice/authSlice";
 
 export default function Usericon() {
-  const navigate = useNavigate();
-    const user = useSelector((state) => state.auth.user);
-    const dispatch = useDispatch();
+  const user = useSelector((state) => state.auth.user);
+  const dispatch = useDispatch();
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const handleClick = (event) => {
@@ -30,23 +28,22 @@ export default function Usericon() {
     setAnchorEl(null);
   };
 
-  const userName = user?.data?.name || user?.name || 'Guest';
-  const userEmail = user?.data?.email || user?.email || 'Guest';
+  const userName = user?.data?.name || user?.name || "Guest";
+  const userEmail = user?.data?.email || user?.email || "Guest";
   return (
     <React.Fragment>
-      
-        <Tooltip title="Account settings">
-          <IconButton
-            onClick={handleClick}
-            size="small"
-            aria-controls={open ? 'account-menu' : undefined}
-            aria-haspopup="true"
-            aria-expanded={open ? 'true' : undefined}
-          >
-            <Avatar sx={{ width: 32, height: 32 }}></Avatar>
-          </IconButton>
-        </Tooltip>
-      
+      <Tooltip title="Account settings">
+        <IconButton
+          onClick={handleClick}
+          size="small"
+          aria-controls={open ? "account-menu" : undefined}
+          aria-haspopup="true"
+          aria-expanded={open ? "true" : undefined}
+        >
+          <Avatar sx={{ width: 32, height: 32 }}></Avatar>
+        </IconButton>
+      </Tooltip>
+
       <Menu
         anchorEl={anchorEl}
         id="account-menu"
@@ -57,39 +54,35 @@ export default function Usericon() {
           paper: {
             elevation: 0,
             sx: {
-              overflow: 'visible',
-              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              overflow: "visible",
+              filter: "drop-shadow(0px 2px 8px rgba(0,0,0,0.32))",
               mt: 1.5,
-              '& .MuiAvatar-root': {
+              "& .MuiAvatar-root": {
                 width: 32,
                 height: 32,
                 ml: -0.5,
                 mr: 1,
               },
-              '&::before': {
+              "&::before": {
                 content: '""',
-                display: 'block',
-                position: 'absolute',
+                display: "block",
+                position: "absolute",
                 top: 0,
                 right: 14,
                 width: 10,
                 height: 10,
-                bgcolor: 'background.paper',
-                transform: 'translateY(-50%) rotate(45deg)',
+                bgcolor: "background.paper",
+                transform: "translateY(-50%) rotate(45deg)",
                 zIndex: 0,
               },
             },
           },
         }}
-        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        transformOrigin={{ horizontal: "right", vertical: "top" }}
+        anchorOrigin={{ horizontal: "right", vertical: "bottom" }}
       >
-        <MenuItem onClick={handleClose}>
-           Hi, {userName}
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-           {userEmail}
-        </MenuItem>
+        <MenuItem onClick={handleClose}>Hi, {userName}</MenuItem>
+        <MenuItem onClick={handleClose}>{userEmail}</MenuItem>
         <Divider />
         <MenuItem onClick={handleClose}>
           <ListItemIcon>
@@ -98,7 +91,7 @@ export default function Usericon() {
           Settings
         </MenuItem>
         <MenuItem onClick={() => dispatch(performLogout())}>
-          <ListItemIcon >
+          <ListItemIcon>
             <Logout fontSize="small" />
           </ListItemIcon>
           Logout
