@@ -421,7 +421,6 @@ export default function Stats() {
         title="Customer Onboarding vs Expiry (last 12 months)"
         colors={{ onboarded: "#10B981", expired: "#6366F1" }}
       />
-
       <DonutRow title="Subscriptions & Expiry" charts={donuts} height={240} />
     </>
   );

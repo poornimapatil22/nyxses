@@ -163,7 +163,7 @@ export default function CustomersTable() {
     fetchFiltered();
   }, [fetchFiltered]);
 
-  // filter popover
+  // filter popover anchor el helps the filter popup to use the click has a refrence to open
   const [anchorEl, setAnchorEl] = useState(null);
   const openFilter = (e) => setAnchorEl(e.currentTarget);
   const closeFilter = () => setAnchorEl(null);
