@@ -36,7 +36,7 @@ export default function Sidebar({ menuItems }) {
   }, [collapsed]);
 
   return (
-    <Box sx={{ display: "flex", height: "100vh" }}>
+    <Box sx={{ display: {xs:"none",sm:"none",md:"flex"}, height: "100vh" }}>
       <Drawer
         variant="permanent"
         sx={{

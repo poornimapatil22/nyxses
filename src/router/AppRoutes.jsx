@@ -9,8 +9,9 @@ import Login from "../features/auth/pages/Login";
 import DashboardLayout from "../features/DashboardLayout/Components/DashboardLayout";
 import Stats from "../features/Dashboard/components/Stats";
 import CustomersTable from "../features/Dashboard/components/CustomersTable";
+import Sharedapp from "../features/Sharedapplication/components/Sharedapp";
 
-const AppsPage = () => <h1>Apps (Super Admin)</h1>;
+// const AppsPage = () => <h1>Apps (Super Admin)</h1>;
 const DevicesPage = () => <h1>Devices (Admin)</h1>;
 const AdminIndex = () => <h1>Admin Dashboard</h1>;
 const Unauthorized = () => <h1>Unauthorized</h1>;
@@ -36,7 +37,7 @@ export default function AppRoutes() {
           <Route element={<RequireSuperAdmin />}>
             <Route path={ROUTES.CUSTOMERS} element={<CustomersTable />} />{" "}
             {/* /dashboard/customers */}
-            <Route path={ROUTES.APPS} element={<AppsPage />} />{" "}
+            <Route path={ROUTES.SHAREDAPPS} element={<Sharedapp />} />{" "}
             {/* /dashboard/apps */}
           </Route>
 

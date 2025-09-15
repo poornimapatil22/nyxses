@@ -8,4 +8,5 @@ export const ROUTES = {
   CUSTOMERS: 'customers',
   APPS: 'apps',
   DEVICES: 'devices',
+  SHAREDAPPS: 'sharedapps',
 };
