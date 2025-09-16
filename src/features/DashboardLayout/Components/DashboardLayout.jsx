@@ -23,8 +23,7 @@ import { Outlet } from "react-router-dom";
 const SMENU = [
   { label: "Dashboard", icon: <DashboardIcon />, to: "/dashboard" },
   { label: "Customers", icon: <AppsIcon />, to: "customers" },
-  { label: "Shared Apps", icon: <AppsIcon />
-  },
+  { label: "Shared Apps", icon: <AppsIcon />, to: "sharedapps" },
   { label: "Settings", icon: <SettingsIcon />, to: "/settings" },
   { label: "Notification", icon: <NotificationsIcon />, to: "/notifications" },
 ];

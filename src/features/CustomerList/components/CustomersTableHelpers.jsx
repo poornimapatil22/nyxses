@@ -46,7 +46,7 @@ export const STATUS_STYLE = {
   "customer.pause": {
     label: "Pause",
     color: muiTheme.palette.warning.main,
-    bg: muiTheme.palette.orange?.lighten_4,
+    bg: muiTheme.palette.orange,
   },
   "customer.no.signin": {
     label: "No sign-in",
@@ -119,4 +119,3 @@ export const useDebounced = (value, delay = 400) => {
   }, [value, delay]);
   return v;
 };
-

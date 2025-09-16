@@ -97,8 +97,8 @@ export const rowContent = (index, c) => {
   size="small"
   variant="filled"
   sx={{
-    color: st.color,       
-    backgroundColor: st.bg,
+    color: st.color,        // text color
+    backgroundColor: st.bg, // background color
     borderRadius: 2,
   }}
 />
