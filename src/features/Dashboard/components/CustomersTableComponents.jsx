@@ -92,13 +92,17 @@ export const rowContent = (index, c) => {
       <TableCell>{fmtDate(c.expiryTime)}</TableCell>
       <TableCell>{Number(c.deviceLimit ?? 0)}</TableCell>
       <TableCell>
-        <Chip
-          label={st.label}
-          color={st.color}
-          size="small"
-          variant={st.color === "default" ? "outlined" : "filled"}
-          sx={{ borderRadius: 2 }}
-        />
+      <Chip
+  label={st.label}
+  size="small"
+  variant="filled"
+  sx={{
+    color: st.color,        // text color
+    backgroundColor: st.bg, // background color
+    borderRadius: 2,
+  }}
+/>
+
       </TableCell>
       <TableCell align="center">
         <Tooltip title="View">

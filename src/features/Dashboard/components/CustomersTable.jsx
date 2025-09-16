@@ -1,24 +1,16 @@
-
 import React, { useEffect, useState } from "react";
 import {
   Box,
   Paper,
   Typography,
-  TextField,
-  InputAdornment,
   Tooltip,
   Button,
   TablePagination,
   Stack,
   Popover,
-  FormControlLabel,
-  Checkbox,
-  MenuItem,
-  Select,
   IconButton,
 } from "@mui/material";
 import AddRounded from "@mui/icons-material/AddRounded";
-import SearchRounded from "@mui/icons-material/SearchRounded";
 import FilterListRounded from "@mui/icons-material/FilterListRounded";
 
 import { TableVirtuoso } from "react-virtuoso";
@@ -31,17 +23,14 @@ import {
   selectcustomerloading,
 } from "../slice/Customerslice";
 
-import {
-  ACCOUNT_TYPES,
-  STATUSES,
-  SORT_FIELD_MAP,
-  useDebounced,
-} from "./CustomersTableHelpers";
+import { SORT_FIELD_MAP, useDebounced } from "./CustomersTableHelpers";
 import {
   VirtuosoTableComponents,
   fixedHeaderContent,
   rowContent,
 } from "./CustomersTableComponents";
+import CustomerSearchBar from "./CustomerSearchBar";
+import CustomerFilters from "./CustomerFilters";
 
 export default function CustomersTable() {
   const dispatch = useDispatch();
@@ -123,28 +112,16 @@ export default function CustomersTable() {
         <Button variant="outlined" startIcon={<AddRounded />} size="small">
           Add Customer
         </Button>
-        <TextField
-          size="small"
-          placeholder="Search"
-          value={search}
-          onChange={(e) => {
-            setPage(0);
-            setSearch(e.target.value);
-          }}
-          sx={{ width: 320, ml: 1 }}
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchRounded fontSize="small" />
-              </InputAdornment>
-            ),
-          }}
-        />
+
+        {/* ✅ Search extracted */}
+        <CustomerSearchBar search={search} setSearch={setSearch} setPage={setPage} />
+
         <Tooltip title="Filters">
           <IconButton onClick={openFilter} size="small">
             <FilterListRounded />
           </IconButton>
         </Tooltip>
+
         <Box sx={{ flex: 1 }} />
         <Typography variant="body2" color="text.secondary">
           {start}–{end} of {totalItemsCount}
@@ -181,65 +158,16 @@ export default function CustomersTable() {
         onClose={closeFilter}
         anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
       >
-        <Box sx={{ p: 2, width: 320 }}>
-          <Typography variant="subtitle2" sx={{ mb: 1 }}>
-            Filters
-          </Typography>
-
-          <Typography variant="caption" color="text.secondary">
-            Account Type
-          </Typography>
-          <Select
-            size="small"
-            fullWidth
-            value={accountType}
-            onChange={(e) => {
-              setPage(0);
-              setAccountType(e.target.value);
-            }}
-            sx={{ mb: 1 }}
-          >
-            {ACCOUNT_TYPES.map((o) => (
-              <MenuItem key={o.value} value={o.value}>
-                {o.label}
-              </MenuItem>
-            ))}
-          </Select>
-
-          <Typography variant="caption" color="text.secondary">
-            Status
-          </Typography>
-          <Select
-            size="small"
-            fullWidth
-            value={status}
-            onChange={(e) => {
-              setPage(0);
-              setStatus(e.target.value);
-            }}
-            sx={{ mb: 1 }}
-          >
-            {STATUSES.map((o) => (
-              <MenuItem key={o.value} value={o.value}>
-                {o.label}
-              </MenuItem>
-            ))}
-          </Select>
-
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={expiredOnly}
-                onChange={(e) => {
-                  setPage(0);
-                  setExpiredOnly(e.target.checked);
-                }}
-                size="small"
-              />
-            }
-            label="Expired only"
-          />
-        </Box>
+        {/* ✅ Filters extracted */}
+        <CustomerFilters
+          accountType={accountType}
+          setAccountType={setAccountType}
+          status={status}
+          setStatus={setStatus}
+          expiredOnly={expiredOnly}
+          setExpiredOnly={setExpiredOnly}
+          setPage={setPage}
+        />
       </Popover>
     </Paper>
   );
