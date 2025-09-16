@@ -14,9 +14,9 @@ import '@fontsource/poppins/500.css';
 import '@fontsource/poppins/700.css';
 
 createRoot(document.getElementById('root')).render(
-  // <StrictMode>
+  <StrictMode>
     <Providers>
       <App />
     </Providers>
-  // </StrictMode>
+  </StrictMode>
 );

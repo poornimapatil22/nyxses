@@ -57,10 +57,7 @@ const Sharedapp = () => {
   // dummy filter button (no-op for now)
   const openFilter = () => {};
 
-  const handlechange = (value) =>{
-    setSearch(value);
-
-  }
+  const handlechange = (value) =>{ setSearch(value);}
 
   const total = apps.length;
 
@@ -85,12 +82,6 @@ const Sharedapp = () => {
             ),
           }}
         />
-
-        <Tooltip title="Filters">
-          <IconButton onClick={openFilter} size="small">
-            <FilterListRounded />
-          </IconButton>
-        </Tooltip>
 
         <Box sx={{ flex: 1 }} />
 
@@ -132,7 +123,7 @@ const Sharedapp = () => {
                 <TableCell sx={{ fontWeight: 500 }}>{app.name}</TableCell>
                 <TableCell sx={{ color: "text.secondary" }}>{app.pkg}</TableCell>
 
-                <TableCell sx={{ maxWidth: 360, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                <TableCell sx={{ maxWidth: 160, whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
                   {app.url || "—"}
                 </TableCell>
 

@@ -58,6 +58,13 @@ export default function Sidebar({ menuItems }) {
           },
         }}
       >
+        <Box sx={{ display: "flex", justifyContent: "center" }}>
+            <img
+              src="/neodms icon dark back.svg"
+              alt="NeoDMS Logo"
+              style={{ display: collapsed ? "block" : "none", width: "100%" }}
+            />
+          </Box>
         {/* Collapse button */}
         <Box
           sx={{

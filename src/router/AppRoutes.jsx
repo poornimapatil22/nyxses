@@ -7,8 +7,8 @@ import { RequireSuperAdmin, RequireAdmin } from "./roleGates";
 
 import Login from "../features/auth/pages/Login";
 import DashboardLayout from "../features/DashboardLayout/Components/DashboardLayout";
-import Stats from "../features/Dashboard/components/Stats";
-import CustomersTable from "../features/Dashboard/components/CustomersTable";
+import Stats from "../features/CustomerAnalytics/components/Stats";
+import CustomersTable from "../features/CustomerList/components/CustomersTable";
 import Sharedapp from "../features/Sharedapplication/components/Sharedapp";
 
 // const AppsPage = () => <h1>Apps (Super Admin)</h1>;
