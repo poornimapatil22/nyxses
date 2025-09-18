@@ -9,7 +9,7 @@ import Login from "../features/auth/pages/Login";
 import DashboardLayout from "../features/DashboardLayout/Components/DashboardLayout";
 import Stats from "../features/CustomerAnalytics/components/Stats";
 import CustomersTable from "../features/CustomerList/components/CustomersTable";
-import SharedApp from "../features/Sharedapplication/components/SharedApp";
+import SharedApp from "../features/Sharedapplication/components/Shared.jsx";
 
 // const AppsPage = () => <h1>Apps (Super Admin)</h1>;
 const DevicesPage = () => <h1>Devices (Admin)</h1>;
