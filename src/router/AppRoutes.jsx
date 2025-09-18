@@ -9,7 +9,7 @@ import Login from "../features/auth/pages/Login";
 import DashboardLayout from "../features/DashboardLayout/Components/DashboardLayout";
 import Stats from "../features/CustomerAnalytics/components/Stats";
 import CustomersTable from "../features/CustomerList/components/CustomersTable";
-import Sharedapp from "../features/Sharedapplication/components/Sharedapp";
+import SharedApp from "../features/Sharedapplication/components/SharedApp";
 
 // const AppsPage = () => <h1>Apps (Super Admin)</h1>;
 const DevicesPage = () => <h1>Devices (Admin)</h1>;
@@ -37,7 +37,7 @@ export default function AppRoutes() {
           <Route element={<RequireSuperAdmin />}>
             <Route path={ROUTES.CUSTOMERS} element={<CustomersTable />} />{" "}
             {/* /dashboard/customers */}
-            <Route path={ROUTES.SHAREDAPPS} element={<Sharedapp />} />{" "}
+            <Route path={ROUTES.SHAREDAPPS} element={<SharedApp />} />{" "}
             {/* /dashboard/apps */}
           </Route>
 
